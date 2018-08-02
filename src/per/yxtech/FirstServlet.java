@@ -14,6 +14,7 @@ public class FirstServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException{
+        /*
         System.out.println("调用 doGet 方法");
         response.setContentType("text/hmlt;charset=gbk");
         PrintWriter out = response.getWriter();
@@ -29,6 +30,18 @@ public class FirstServlet extends HttpServlet {
         out.println("</body>");
         out.println("</html>");
 
+        out.flush();
+        out.close();
+        */
+
+
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<!DOCTYPE>");
+        out.println("<HTML>");
+        out.println("<HEAD><TITLE>测试内容输出</TITLE></HEAD>");
+        out.println("<BODY>我是一只小小鸟<br/>情色<br/>色情<br/>赌博</BODY>");
+        out.println("</HTML>");
         out.flush();
         out.close();
     }
