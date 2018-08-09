@@ -38,13 +38,16 @@ public class FirstFilter implements Filter{
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         servletRequest.setCharacterEncoding(encoding);
-        servletResponse.setCharacterEncoding(encoding);
         HttpServletRequest req = (HttpServletRequest)servletRequest;
         System.out.println("请求被"+filterName+"过滤");
 
         if("GET".equals(req.getMethod())){
             req = new MyEncodingWrapper(req, encoding);
+        }else{
+            servletRequest.setCharacterEncoding(encoding);
         }
+
+        servletResponse.setCharacterEncoding(encoding);
         filterChain.doFilter(req, servletResponse);
         System.out.println("响应被"+filterName+"过滤");
     }

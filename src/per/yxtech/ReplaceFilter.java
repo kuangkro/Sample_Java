@@ -11,27 +11,31 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-@WebFilter(description = "内容过滤", filterName = "replace_filter", urlPatterns = {"/*"}, initParams = { @WebInitParam(name = "filePath", value="replace_ZH.properties")})
+@WebFilter(description = "内容过滤", filterName = "replace_filter", urlPatterns = {"/*"}, initParams = { @WebInitParam(name = "filePath", value="properties/replace_ZH.properties")})
 public class ReplaceFilter implements Filter {
 
     private Properties propert = new Properties();
+    private String filterName;
 
     public void init(FilterConfig config) throws ServletException{
+        filterName = config.getFilterName();
         String filePath = config.getInitParameter("filePath");
         try{
-            propert.load(ReplaceFilter.class.getClassLoader()
-                    .getResourceAsStream(filePath));
+            propert.load(ReplaceFilter.class.getClassLoader().getResourceAsStream(filePath));
+
+            //propert.load(new FileInputStream(filePath));
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        catch (IOException e) {
+        catch(Exception e){
             e.printStackTrace();
         }
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        System.out.println("请求被"+filterName+"过滤");
         HttpServletResponse rep = (HttpServletResponse)servletResponse;
         ResponseReplaceWrapper resp = new ResponseReplaceWrapper(rep);
         filterChain.doFilter(servletRequest, resp);
@@ -42,7 +46,7 @@ public class ReplaceFilter implements Filter {
             outString = outString.replace(key, propert.getProperty(key));
         }
 
-        PrintWriter writer = resp.getWriter();
+        PrintWriter writer = rep.getWriter();
         writer.write(outString);
     }
 
