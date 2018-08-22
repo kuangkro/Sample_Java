@@ -3,10 +3,12 @@ package per.yxtech;
 import com.helper.GZIPResponseWarpper;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebFilter(description = "内容压缩过滤", filterName = "gzip_filter", urlPatterns = {"/*"})
 public class GZIPFilter implements Filter{
 
     @Override

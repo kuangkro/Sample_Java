@@ -51,14 +51,17 @@ public class GZIPResponseStream extends ServletOutputStream {
 
     @Override
     public void write(int b) throws IOException {
-
+        if(closed){
+            throw new IOException("输出流关闭中");
+        }
+        gzipOutputStream.write((byte)b);
     }
 
     public void write(byte[] b) throws IOException{
         if(closed){
             throw new IOException("输出流关闭中");
         }
-        gzipOutputStream.write(b);
+        write(b, 0, b.length);
     }
 
     public void write(byte[] b, int offset, int len) throws IOException{
